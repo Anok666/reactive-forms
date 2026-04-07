@@ -1,0 +1,53 @@
+{
+  "name": "reactive-forms",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "lint": "ng lint",
+    "lint:fix": "ng lint --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "private": true,
+  "packageManager": "npm@11.11.0",
+  "dependencies": {
+    "@angular/animations": "^21.2.7",
+    "@angular/common": "^21.2.0",
+    "@angular/compiler": "^21.2.0",
+    "@angular/core": "^21.2.0",
+    "@angular/forms": "^21.2.0",
+    "@angular/platform-browser": "^21.2.0",
+    "@angular/router": "^21.2.0",
+    "@primeuix/themes": "^2.0.3",
+    "primeicons": "^7.0.0",
+    "primeng": "^21.1.5",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular-eslint/builder": "^21.3.1",
+    "@angular-eslint/eslint-plugin": "^21.3.1",
+    "@angular-eslint/eslint-plugin-template": "^21.3.1",
+    "@angular-eslint/schematics": "^21.3.1",
+    "@angular-eslint/template-parser": "^21.3.1",
+    "@angular/build": "^21.2.6",
+    "@angular/cli": "^21.2.6",
+    "@angular/compiler-cli": "^21.2.0",
+    "@eslint/js": "^10.0.1",
+    "@tailwindcss/postcss": "^4.2.2",
+    "angular-eslint": "^21.3.1",
+    "eslint": "^10.2.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "jsdom": "^28.0.0",
+    "prettier": "^3.8.1",
+    "tailwindcss": "^4.2.2",
+    "typescript": "~5.9.2",
+    "typescript-eslint": "^8.58.0",
+    "vitest": "^4.0.8"
+  }
+}
