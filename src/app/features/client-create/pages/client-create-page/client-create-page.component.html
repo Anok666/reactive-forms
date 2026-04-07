@@ -31,7 +31,7 @@
         </ol>
 
         @if (activeStep() === 0) {
-          <app-client-step-details />
+          <app-client-step-details [form]="clientForm.controls.details" />
         } @else {
           <app-client-step-consents />
         }
