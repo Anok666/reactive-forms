@@ -1,0 +1,37 @@
+<section class="grid gap-4 md:grid-cols-2">
+  <div class="flex flex-col gap-2 md:col-span-2">
+    <label for="clientType" class="font-medium">Typ klienta</label>
+    <p-select
+      inputId="clientType"
+      [options]="clientTypes"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Wybierz typ"
+    />
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <label for="firstName" class="font-medium">Imie</label>
+    <input id="firstName" pInputText placeholder="Jan" />
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <label for="lastName" class="font-medium">Nazwisko</label>
+    <input id="lastName" pInputText placeholder="Kowalski" />
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <label for="companyName" class="font-medium">Nazwa firmy</label>
+    <input id="companyName" pInputText placeholder="Acme Sp. z o.o." />
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <label for="nip" class="font-medium">NIP</label>
+    <input id="nip" pInputText placeholder="1234567890" />
+  </div>
+
+  <div class="flex flex-col gap-2 md:col-span-2">
+    <label for="email" class="font-medium">Email</label>
+    <input id="email" pInputText type="email" placeholder="kontakt@acme.pl" />
+  </div>
+</section>

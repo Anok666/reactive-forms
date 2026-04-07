@@ -1,0 +1,57 @@
+<main
+  class="min-h-screen bg-surface-50 p-4 text-surface-900 dark:bg-surface-950 dark:text-surface-0"
+>
+  <section class="mx-auto max-w-4xl">
+    <p-card>
+      <ng-template pTemplate="header">
+        <div class="border-b border-surface-200 p-6 dark:border-surface-700">
+          <h1 class="text-2xl font-semibold">Utworz klienta</h1>
+          <p class="mt-2 text-sm text-surface-600 dark:text-surface-300">
+            Iteracja 1: shell nawigacji krokowej
+          </p>
+        </div>
+      </ng-template>
+
+      <div class="p-6">
+        <ol class="mb-6 grid grid-cols-2 gap-3">
+          <li
+            class="rounded-md border p-3 text-sm"
+            [class.border-primary]="activeStep() === 0"
+            [class.bg-primary-50]="activeStep() === 0"
+          >
+            1. Dane klienta
+          </li>
+          <li
+            class="rounded-md border p-3 text-sm"
+            [class.border-primary]="activeStep() === 1"
+            [class.bg-primary-50]="activeStep() === 1"
+          >
+            2. Zgody
+          </li>
+        </ol>
+
+        @if (activeStep() === 0) {
+          <app-client-step-details />
+        } @else {
+          <app-client-step-consents />
+        }
+
+        <div class="mt-6 flex items-center justify-between">
+          <p-button
+            label="Wstecz"
+            severity="secondary"
+            [outlined]="true"
+            (onClick)="goBack()"
+            [disabled]="activeStep() === 0"
+          />
+
+          @if (activeStep() === 0) {
+            <p-button label="Dalej" icon="pi pi-arrow-right" iconPos="right" (onClick)="goNext()" />
+          } @else {
+            <p-button label="Zapisz" icon="pi pi-check" />
+          }
+        </div>
+      </div>
+    </p-card>
+  </section>
+</main>
