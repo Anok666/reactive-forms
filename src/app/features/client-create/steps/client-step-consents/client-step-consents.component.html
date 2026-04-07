@@ -1,0 +1,14 @@
+<section class="space-y-4">
+  <p class="text-sm text-surface-600 dark:text-surface-300">
+    W iteracji 2 tutaj pojawia sie dynamiczna lista zgod pobrana z API.
+  </p>
+
+  <div class="space-y-3">
+    @for (consent of mockConsents; track consent) {
+      <div class="flex items-center gap-2 rounded-md border p-3">
+        <input type="checkbox" disabled />
+        <span>{{ consent }}</span>
+      </div>
+    }
+  </div>
+</section>
