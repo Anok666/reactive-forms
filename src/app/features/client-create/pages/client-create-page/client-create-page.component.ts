@@ -7,6 +7,7 @@ import { ClientStepConsentsComponent } from '../../steps/client-step-consents/cl
 import { ClientStepDetailsComponent } from '../../steps/client-step-details/client-step-details.component';
 import { ClientFormService } from '../../services/client-form.service';
 import { ConsentsApiService } from '../../services/consents-api.service';
+import { CreateClientPayload } from '../../models/client-form.model';
 
 @Component({
   selector: 'app-client-create-page',
@@ -20,6 +21,7 @@ export class ClientCreatePageComponent {
 
   protected readonly activeStep = signal(0);
   protected readonly clientForm = this.clientFormService.createForm();
+  protected readonly savedPayload = signal<CreateClientPayload | null>(null);
   protected readonly consents$ = this.consentsApiService.getConsents().pipe(
     map((consents) => consents.filter((consent) => consent.inUse)),
     tap((consents) => this.clientFormService.syncConsentControls(this.clientForm, consents)),
@@ -59,7 +61,27 @@ export class ClientCreatePageComponent {
       return;
     }
 
-    // Iteracja 5 domknie finalny payload; na razie weryfikujemy krok 2.
-    console.log('Form value', this.clientForm.getRawValue());
+    const payload = this.toPayload();
+    this.savedPayload.set(payload);
+    console.log('Create client payload', payload);
+  }
+
+  protected savedPayloadJson(): string {
+    return JSON.stringify(this.savedPayload(), null, 2);
+  }
+
+  private toPayload(): CreateClientPayload {
+    const rawValue = this.clientForm.getRawValue();
+    const { clientType, firstName, lastName, companyName, nip, email } = rawValue.details;
+
+    return {
+      clientType,
+      firstName: clientType === 'PERSON' ? firstName : null,
+      lastName: clientType === 'PERSON' ? lastName : null,
+      companyName: clientType === 'COMPANY' ? companyName : null,
+      nip: clientType === 'COMPANY' ? nip : null,
+      email,
+      consents: rawValue.consents,
+    };
   }
 }

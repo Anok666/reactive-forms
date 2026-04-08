@@ -15,3 +15,13 @@ export interface ClientCreateForm {
   details: FormGroup<ClientDetailsForm>;
   consents: FormRecord<FormControl<boolean>>;
 }
+
+export interface CreateClientPayload {
+  clientType: ClientType;
+  firstName: string | null;
+  lastName: string | null;
+  companyName: string | null;
+  nip: string | null;
+  email: string;
+  consents: Record<string, boolean>;
+}
