@@ -1,4 +1,4 @@
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, FormRecord } from '@angular/forms';
 
 export type ClientType = 'PERSON' | 'COMPANY';
 
@@ -13,4 +13,5 @@ export interface ClientDetailsForm {
 
 export interface ClientCreateForm {
   details: FormGroup<ClientDetailsForm>;
+  consents: FormRecord<FormControl<boolean>>;
 }

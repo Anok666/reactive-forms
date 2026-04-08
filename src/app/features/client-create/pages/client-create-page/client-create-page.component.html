@@ -7,7 +7,7 @@
         <div class="border-b border-surface-200 p-6 dark:border-surface-700">
           <h1 class="text-2xl font-semibold">Utworz klienta</h1>
           <p class="mt-2 text-sm text-surface-600 dark:text-surface-300">
-            Iteracja 1: shell nawigacji krokowej
+            Iteracja 4: dynamiczne zgody i walidacja kroku 2
           </p>
         </div>
       </ng-template>
@@ -33,7 +33,10 @@
         @if (activeStep() === 0) {
           <app-client-step-details [form]="clientForm.controls.details" />
         } @else {
-          <app-client-step-consents />
+          <app-client-step-consents
+            [consents$]="consents$"
+            [consentsForm]="clientForm.controls.consents"
+          />
         }
 
         <div class="mt-6 flex items-center justify-between">
@@ -48,7 +51,7 @@
           @if (activeStep() === 0) {
             <p-button label="Dalej" icon="pi pi-arrow-right" iconPos="right" (onClick)="goNext()" />
           } @else {
-            <p-button label="Zapisz" icon="pi pi-check" />
+            <p-button label="Zapisz" icon="pi pi-check" (onClick)="save()" />
           }
         </div>
       </div>
