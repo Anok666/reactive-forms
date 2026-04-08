@@ -7,7 +7,7 @@
         <div class="border-b border-surface-200 p-6 dark:border-surface-700">
           <h1 class="text-2xl font-semibold">Utworz klienta</h1>
           <p class="mt-2 text-sm text-surface-600 dark:text-surface-300">
-            Iteracja 4: dynamiczne zgody i walidacja kroku 2
+            Iteracja 5: finalny payload i podglad JSON
           </p>
         </div>
       </ng-template>
@@ -56,5 +56,21 @@
         </div>
       </div>
     </p-card>
+
+    @if (savedPayload(); as payload) {
+      <p-card class="mt-4">
+        <ng-template pTemplate="header">
+          <div class="border-b border-surface-200 p-4 dark:border-surface-700">
+            <h2 class="text-lg font-semibold">Wynik mapowania (payload)</h2>
+          </div>
+        </ng-template>
+
+        <div class="p-4">
+          <pre
+            class="overflow-x-auto rounded-md bg-surface-900 p-4 text-xs text-surface-0"
+          ><code>{{ savedPayloadJson() }}</code></pre>
+        </div>
+      </p-card>
+    }
   </section>
 </main>
