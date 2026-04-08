@@ -1,4 +1,4 @@
-export type ConsentScope = 'MARKETING' | 'LEGAL' | 'TECH';
+import { ConsentScope } from './consent-scope.type';
 
 export interface ConsentDto {
   id: string;

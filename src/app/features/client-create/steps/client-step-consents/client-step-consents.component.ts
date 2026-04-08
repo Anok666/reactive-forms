@@ -5,7 +5,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CheckboxModule } from 'primeng/checkbox';
 import { combineLatest, Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { ConsentDto, ConsentScope } from '../../models/consent.dto';
+import type { ConsentDto, ConsentScope } from '../../models';
 
 interface ConsentGroupVm {
   scope: ConsentScope;

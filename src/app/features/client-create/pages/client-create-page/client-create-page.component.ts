@@ -7,7 +7,7 @@ import { ClientStepConsentsComponent } from '../../steps/client-step-consents/cl
 import { ClientStepDetailsComponent } from '../../steps/client-step-details/client-step-details.component';
 import { ClientFormService } from '../../services/client-form.service';
 import { ConsentsApiService } from '../../services/consents-api.service';
-import { CreateClientPayload } from '../../models/client-form.model';
+import type { CreateClientPayload } from '../../models';
 
 @Component({
   selector: 'app-client-create-page',

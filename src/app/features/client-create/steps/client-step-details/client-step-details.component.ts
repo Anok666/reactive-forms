@@ -2,7 +2,7 @@ import { Component, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
-import { ClientDetailsForm } from '../../models/client-form.model';
+import type { ClientDetailsForm } from '../../models';
 
 @Component({
   selector: 'app-client-step-details',

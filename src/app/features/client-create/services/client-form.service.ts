@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormRecord, Validators } from '@angular/forms';
-import { ClientCreateForm, ClientType } from '../models/client-form.model';
-import { ConsentDto } from '../models/consent.dto';
+import type { ClientCreateForm, ClientType, ConsentDto } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class ClientFormService {
