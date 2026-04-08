@@ -1,0 +1,82 @@
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
+import { ConsentDto } from '../models/consent.dto';
+
+const MOCK_CONSENTS: ConsentDto[] = [
+  {
+    id: 'c1',
+    code: 'MKT_EMAIL',
+    title: 'Zgoda na newsletter email',
+    description: 'Wysylka ofert i nowosci na adres email.',
+    required: true,
+    inUse: true,
+    scope: 'MARKETING',
+  },
+  {
+    id: 'c2',
+    code: 'MKT_SMS',
+    title: 'Zgoda na wiadomosci SMS',
+    required: false,
+    inUse: true,
+    scope: 'MARKETING',
+  },
+  {
+    id: 'c3',
+    code: 'LEGAL_RODO',
+    title: 'Informacja o przetwarzaniu danych (RODO)',
+    description: 'Wymagana do prowadzenia relacji biznesowej.',
+    required: true,
+    inUse: true,
+    scope: 'LEGAL',
+  },
+  {
+    id: 'c4',
+    code: 'LEGAL_TERMS',
+    title: 'Regulamin uslugi (archiwalny)',
+    required: false,
+    inUse: false,
+    scope: 'LEGAL',
+  },
+  {
+    id: 'c5',
+    code: 'TECH_COOKIES',
+    title: 'Preferencje plikow cookie',
+    required: false,
+    inUse: true,
+    scope: 'TECH',
+  },
+  {
+    id: 'c6',
+    code: 'TECH_ANALYTICS',
+    title: 'Analityka produktu (wygasla)',
+    required: false,
+    inUse: false,
+    scope: 'TECH',
+  },
+  {
+    id: 'c7',
+    code: 'MKT_PHONE',
+    title: 'Kontakt telefoniczny marketingowy',
+    required: false,
+    inUse: true,
+    scope: 'MARKETING',
+  },
+  {
+    id: 'c8',
+    code: 'LEGAL_ELECTRONIC',
+    title: 'Dokumenty elektroniczne',
+    required: false,
+    inUse: true,
+    scope: 'LEGAL',
+  },
+];
+
+@Injectable({ providedIn: 'root' })
+export class ConsentsApiService {
+  private readonly delayMs = 900;
+
+  getConsents(): Observable<ConsentDto[]> {
+    return of(MOCK_CONSENTS).pipe(delay(this.delayMs));
+  }
+}

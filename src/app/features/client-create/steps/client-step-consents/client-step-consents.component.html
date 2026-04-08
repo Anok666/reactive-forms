@@ -1,14 +1,36 @@
 <section class="space-y-4">
   <p class="text-sm text-surface-600 dark:text-surface-300">
-    W iteracji 2 tutaj pojawia sie dynamiczna lista zgod pobrana z API.
+    Zgody ladowane z mockowego API (tylko
+    <code class="rounded bg-surface-100 px-1 dark:bg-surface-800">inUse === true</code>).
   </p>
 
-  <div class="space-y-3">
-    @for (consent of mockConsents; track consent) {
-      <div class="flex items-center gap-2 rounded-md border p-3">
-        <input type="checkbox" disabled />
-        <span>{{ consent }}</span>
-      </div>
-    }
-  </div>
+  @if (activeConsents() === null) {
+    <div class="flex justify-center py-10" role="status" aria-live="polite">
+      <p-progressSpinner strokeWidth="4" ariaLabel="Ladowanie zgod" />
+    </div>
+  } @else {
+    <ul class="space-y-3">
+      @for (c of activeConsents()!; track c.id) {
+        <li
+          class="flex flex-col gap-1 rounded-md border border-surface-200 p-4 dark:border-surface-700"
+        >
+          <div class="flex flex-wrap items-center gap-2">
+            <span
+              class="rounded bg-surface-100 px-2 py-0.5 text-xs font-medium dark:bg-surface-800"
+              >{{ c.scope }}</span
+            >
+            @if (c.required) {
+              <span class="text-xs font-medium text-orange-600 dark:text-orange-400"
+                >(wymagana)</span
+              >
+            }
+          </div>
+          <span class="font-medium">{{ c.title }}</span>
+          @if (c.description) {
+            <span class="text-sm text-surface-600 dark:text-surface-400">{{ c.description }}</span>
+          }
+        </li>
+      }
+    </ul>
+  }
 </section>
