@@ -22,9 +22,13 @@ export class ClientCreatePageComponent {
   protected readonly activeStep = signal(0);
   protected readonly clientForm = this.clientFormService.createForm();
   protected readonly savedPayload = signal<CreateClientPayload | null>(null);
+  protected readonly consentsLoaded = signal(false);
   protected readonly consents$ = this.consentsApiService.getConsents().pipe(
     map((consents) => consents.filter((consent) => consent.inUse)),
-    tap((consents) => this.clientFormService.syncConsentControls(this.clientForm, consents)),
+    tap((consents) => {
+      this.clientFormService.syncConsentControls(this.clientForm, consents);
+      this.consentsLoaded.set(true);
+    }),
     shareReplay({ bufferSize: 1, refCount: true }),
   );
 
@@ -55,6 +59,10 @@ export class ClientCreatePageComponent {
   }
 
   protected save(): void {
+    if (!this.consentsLoaded()) {
+      return;
+    }
+
     this.clientFormService.markConsentsStepAsTouched(this.clientForm);
 
     if (this.clientForm.controls.consents.invalid) {
