@@ -13,6 +13,14 @@
       </ng-template>
 
       <div class="p-6">
+        @if (isSaved()) {
+          <div
+            class="mb-4 rounded-md border border-green-300 bg-green-50 px-3 py-2 text-sm text-green-700"
+          >
+            Zapisano. Formularz jest w trybie tylko do odczytu.
+          </div>
+        }
+
         <ol class="mb-6 grid grid-cols-2 gap-3">
           <li
             class="rounded-md border p-3 text-sm"
@@ -45,10 +53,17 @@
             severity="secondary"
             [outlined]="true"
             (onClick)="goBack()"
-            [disabled]="activeStep() === 0"
+            [disabled]="activeStep() === 0 || isSaved()"
           />
 
-          @if (activeStep() === 0) {
+          @if (isSaved()) {
+            <p-button
+              label="Edytuj ponownie"
+              icon="pi pi-pencil"
+              severity="secondary"
+              (onClick)="editAgain()"
+            />
+          } @else if (activeStep() === 0) {
             <p-button label="Dalej" icon="pi pi-arrow-right" iconPos="right" (onClick)="goNext()" />
           } @else {
             <p-button
