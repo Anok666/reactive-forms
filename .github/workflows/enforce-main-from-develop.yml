@@ -1,0 +1,32 @@
+name: Enforce main only from develop
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - main
+
+concurrency:
+  group: enforce-main-from-develop-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  merge-from-develop-only:
+    name: Merge to main only from develop
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify PR head branch is develop
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          BASE_REPO: ${{ github.repository }}
+        run: |
+          if [ "$HEAD_REPO" != "$BASE_REPO" ]; then
+            echo "::error::Pull requesty do main muszą pochodzić z tego repozytorium (nie z forka). Główne repo: $BASE_REPO, źródło PR: $HEAD_REPO"
+            exit 1
+          fi
+          if [ "$HEAD_REF" != "develop" ]; then
+            echo "::error::Merge do main jest dozwolony tylko z brancha develop. Aktualny branch źródłowy: $HEAD_REF"
+            exit 1
+          fi
+          echo "OK: PR do main z brancha develop."
