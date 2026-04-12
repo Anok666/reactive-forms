@@ -1,9 +1,10 @@
-import { NgClass } from '@angular/common';
+import { Location, NgClass } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { map, shareReplay, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
 import { ClientStepConsentsComponent } from '../../steps/client-step-consents/client-step-consents.component';
 import { ClientStepDetailsComponent } from '../../steps/client-step-details/client-step-details.component';
 import { ClientFormService } from '../../services/client-form.service';
@@ -25,27 +26,69 @@ export class ClientCreatePageComponent {
   private readonly clientFormService = inject(ClientFormService);
   private readonly consentsApiService = inject(ConsentsApiService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly location = inject(Location);
 
   protected readonly activeStep = signal(0);
   protected readonly clientForm = this.clientFormService.createForm();
   protected readonly savedPayload = signal<CreateClientPayload | null>(null);
   protected readonly isSaved = signal(false);
   protected readonly consentsLoaded = signal(false);
-  protected readonly consents$ = this.consentsApiService.getConsents().pipe(
-    map((consents) => consents.filter((consent) => consent.inUse)),
-    tap((consents) => {
-      this.clientFormService.syncConsentControls(this.clientForm, consents);
-      this.consentsLoaded.set(true);
-    }),
-    shareReplay({ bufferSize: 1, refCount: true }),
-  );
+  protected readonly consents$ =
+    this.clientForm.controls.details.controls.clientType.valueChanges.pipe(
+      startWith(this.clientForm.controls.details.controls.clientType.value),
+      distinctUntilChanged(),
+      switchMap((clientType) =>
+        this.consentsApiService.getConsents(clientType).pipe(
+          tap((consents) => {
+            this.clientFormService.clearConsentSelections(this.clientForm);
+            this.clientFormService.syncConsentControls(this.clientForm, consents);
+            this.consentsLoaded.set(true);
+          }),
+        ),
+      ),
+      shareReplay({ bufferSize: 1, refCount: true }),
+    );
 
   constructor() {
+    this.route.queryParamMap
+      .pipe(
+        map((pm) => pm.get('step')),
+        distinctUntilChanged(),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe((step) => {
+        if (step !== '1' && step !== '2') {
+          void this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { step: '1' },
+            replaceUrl: true,
+          });
+          return;
+        }
+        if (step === '2') {
+          if (this.clientForm.controls.details.invalid) {
+            void this.router.navigate([], {
+              relativeTo: this.route,
+              queryParams: { step: '1' },
+              replaceUrl: true,
+            });
+            return;
+          }
+          this.activeStep.set(1);
+          return;
+        }
+        this.activeStep.set(0);
+      });
+
     this.clientForm.controls.details.controls.clientType.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((clientType) => {
         this.clientFormService.applyClientTypeValidators(this.clientForm, clientType);
       });
+
+    this.consents$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
   }
 
   protected goNext(): void {
@@ -60,7 +103,11 @@ export class ClientCreatePageComponent {
         return;
       }
 
-      this.activeStep.set(1);
+      void this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { step: '2' },
+        queryParamsHandling: 'merge',
+      });
     }
   }
 
@@ -70,7 +117,7 @@ export class ClientCreatePageComponent {
     }
 
     if (this.activeStep() > 0) {
-      this.activeStep.update((value) => value - 1);
+      this.location.back();
     }
   }
 

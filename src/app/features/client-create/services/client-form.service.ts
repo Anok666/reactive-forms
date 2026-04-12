@@ -52,6 +52,14 @@ export class ClientFormService {
     details.nip.updateValueAndValidity({ emitEvent: false });
   }
 
+  /** Zeruje zaznaczenia zgód — wywołaj przed syncConsentControls przy zmianie typu klienta. */
+  clearConsentSelections(form: FormGroup<ClientCreateForm>): void {
+    const record = form.controls.consents;
+    for (const key of Object.keys(record.controls)) {
+      record.controls[key].setValue(false, { emitEvent: false });
+    }
+  }
+
   markDetailsStepAsTouched(form: FormGroup<ClientCreateForm>): void {
     const details = form.controls.details.controls;
     details.clientType.markAsTouched();

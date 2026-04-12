@@ -1,7 +1,7 @@
 <section class="space-y-4">
   <p class="text-sm text-surface-600 dark:text-surface-300">
-    Zgody ladowane z mockowego API (tylko
-    <code class="rounded bg-surface-100 px-1 dark:bg-surface-800">inUse === true</code>).
+    Zgody z mockowego API zaleza od typu klienta (np. firma ma dodatkowe wymagane zgody). Lista
+    odswieza sie przy zmianie typu na pierwszym kroku.
   </p>
 
   @if (groupedConsents$ | async; as groups) {
