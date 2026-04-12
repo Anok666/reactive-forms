@@ -85,6 +85,7 @@ export class ClientCreatePageComponent {
     this.clientForm.controls.details.controls.clientType.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((clientType) => {
+        this.clientFormService.resetDetailsFieldsExceptClientType(this.clientForm);
         this.clientFormService.applyClientTypeValidators(this.clientForm, clientType);
       });
 
