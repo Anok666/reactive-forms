@@ -65,6 +65,22 @@ describe('ClientFormService', () => {
     expect(form.controls.consents.valid).toBe(true);
   });
 
+  it('resetDetailsFieldsExceptClientType clears details and keeps client type', () => {
+    const form = service.createForm();
+    const details = form.controls.details.controls;
+    details.clientType.setValue('PERSON');
+    details.firstName.setValue('Jan');
+    details.email.setValue('jan@acme.com');
+
+    details.clientType.setValue('COMPANY');
+    service.resetDetailsFieldsExceptClientType(form);
+    service.applyClientTypeValidators(form, 'COMPANY');
+
+    expect(details.clientType.value).toBe('COMPANY');
+    expect(details.firstName.value).toBe('');
+    expect(details.email.value).toBe('');
+  });
+
   it('clears all consent checkboxes', () => {
     const form = service.createForm();
     const consents: ConsentDto[] = [
