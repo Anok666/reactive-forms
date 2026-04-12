@@ -4,6 +4,28 @@
 
 @import 'primeicons/primeicons.css';
 
+/* Miejsce na komunikat walidacji — bez tego po kliknięciu „Dalej” layout „skacze”. */
+.form-field-message-slot {
+  min-height: 1.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+/* Desktop: szerszy bufor + margines w slocie, żeby zawijanie nie rozpychało kolumny siatki. */
+@media (min-width: 768px) {
+  .form-field-message-slot {
+    min-height: 2.625rem;
+    margin-top: 0.125rem;
+    padding-inline: 0.25rem;
+    box-sizing: border-box;
+  }
+}
+
+html {
+  /* Gdy pojawia się pionowy scroll, szerokość treści nie „skacze” (typowe na desktopie). */
+  scrollbar-gutter: stable;
+}
+
 html,
 body {
   margin: 0;
