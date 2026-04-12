@@ -22,6 +22,7 @@ export class ClientCreatePageComponent {
   protected readonly activeStep = signal(0);
   protected readonly clientForm = this.clientFormService.createForm();
   protected readonly savedPayload = signal<CreateClientPayload | null>(null);
+  protected readonly isSaved = signal(false);
   protected readonly consentsLoaded = signal(false);
   protected readonly consents$ = this.consentsApiService.getConsents().pipe(
     map((consents) => consents.filter((consent) => consent.inUse)),
@@ -41,6 +42,10 @@ export class ClientCreatePageComponent {
   }
 
   protected goNext(): void {
+    if (this.isSaved()) {
+      return;
+    }
+
     if (this.activeStep() === 0) {
       this.clientFormService.markDetailsStepAsTouched(this.clientForm);
 
@@ -53,6 +58,10 @@ export class ClientCreatePageComponent {
   }
 
   protected goBack(): void {
+    if (this.isSaved()) {
+      return;
+    }
+
     if (this.activeStep() > 0) {
       this.activeStep.update((value) => value - 1);
     }
@@ -71,7 +80,19 @@ export class ClientCreatePageComponent {
 
     const payload = this.toPayload();
     this.savedPayload.set(payload);
+    this.isSaved.set(true);
+    this.clientForm.disable({ emitEvent: false });
     console.log('Create client payload', payload);
+  }
+
+  protected editAgain(): void {
+    this.clientForm.enable({ emitEvent: false });
+    this.clientFormService.applyClientTypeValidators(
+      this.clientForm,
+      this.clientForm.controls.details.controls.clientType.value,
+    );
+    this.isSaved.set(false);
+    this.savedPayload.set(null);
   }
 
   protected savedPayloadJson(): string {
