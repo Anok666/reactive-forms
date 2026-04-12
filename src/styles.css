@@ -4,6 +4,13 @@
 
 @import 'primeicons/primeicons.css';
 
+/* Miejsce na komunikat walidacji — bez tego po kliknięciu „Dalej” layout „skacze”. */
+.form-field-message-slot {
+  min-height: 1.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
 html,
 body {
   margin: 0;

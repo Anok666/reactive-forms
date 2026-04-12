@@ -9,26 +9,32 @@
       placeholder="Wybierz typ"
       formControlName="clientType"
     />
-    @if (showError('clientType')) {
-      <small class="text-red-500">Typ klienta jest wymagany.</small>
-    }
+    <div class="form-field-message-slot" aria-live="polite">
+      @if (showError('clientType')) {
+        <small class="text-red-500" role="alert">Typ klienta jest wymagany.</small>
+      }
+    </div>
   </div>
 
   @if (form().controls.clientType.value === 'PERSON') {
     <div class="flex flex-col gap-2">
       <label for="firstName" class="font-medium">Imie</label>
       <input id="firstName" pInputText placeholder="Jan" formControlName="firstName" />
-      @if (showError('firstName')) {
-        <small class="text-red-500">Imie jest wymagane (min. 2 znaki).</small>
-      }
+      <div class="form-field-message-slot" aria-live="polite">
+        @if (showError('firstName')) {
+          <small class="text-red-500" role="alert">Imie jest wymagane (min. 2 znaki).</small>
+        }
+      </div>
     </div>
 
     <div class="flex flex-col gap-2">
       <label for="lastName" class="font-medium">Nazwisko</label>
       <input id="lastName" pInputText placeholder="Kowalski" formControlName="lastName" />
-      @if (showError('lastName')) {
-        <small class="text-red-500">Nazwisko jest wymagane (min. 2 znaki).</small>
-      }
+      <div class="form-field-message-slot" aria-live="polite">
+        @if (showError('lastName')) {
+          <small class="text-red-500" role="alert">Nazwisko jest wymagane (min. 2 znaki).</small>
+        }
+      </div>
     </div>
   }
 
@@ -41,17 +47,21 @@
         placeholder="Acme Sp. z o.o."
         formControlName="companyName"
       />
-      @if (showError('companyName')) {
-        <small class="text-red-500">Nazwa firmy jest wymagana (min. 2 znaki).</small>
-      }
+      <div class="form-field-message-slot" aria-live="polite">
+        @if (showError('companyName')) {
+          <small class="text-red-500" role="alert">Nazwa firmy jest wymagana (min. 2 znaki).</small>
+        }
+      </div>
     </div>
 
     <div class="flex flex-col gap-2">
       <label for="nip" class="font-medium">NIP</label>
       <input id="nip" pInputText placeholder="1234567890" formControlName="nip" />
-      @if (showError('nip')) {
-        <small class="text-red-500">NIP jest wymagany i musi miec 10 cyfr.</small>
-      }
+      <div class="form-field-message-slot" aria-live="polite">
+        @if (showError('nip')) {
+          <small class="text-red-500" role="alert">NIP jest wymagany i musi miec 10 cyfr.</small>
+        }
+      </div>
     </div>
   }
 
@@ -64,8 +74,10 @@
       placeholder="kontakt@acme.pl"
       formControlName="email"
     />
-    @if (showError('email')) {
-      <small class="text-red-500">Podaj poprawny adres email.</small>
-    }
+    <div class="form-field-message-slot" aria-live="polite">
+      @if (showError('email')) {
+        <small class="text-red-500" role="alert">Podaj poprawny adres email.</small>
+      }
+    </div>
   </div>
 </section>

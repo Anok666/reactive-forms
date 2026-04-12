@@ -7,19 +7,23 @@
   @if (groupedConsents$ | async; as groups) {
     <div [formGroup]="consentsForm()" class="space-y-5">
       @if (requiredMissingCount$ | async; as missingRequired) {
-        @if (missingRequired > 0) {
-          <div
-            class="rounded-md border border-orange-300 bg-orange-50 px-3 py-2 text-sm text-orange-700"
-          >
-            Brakuje {{ missingRequired }} wymaganej(-ych) zgody(-d).
-          </div>
-        } @else {
-          <div
-            class="rounded-md border border-green-300 bg-green-50 px-3 py-2 text-sm text-green-700"
-          >
-            Wszystkie wymagane zgody sa zaznaczone.
-          </div>
-        }
+        <div class="min-h-[3.25rem]" aria-live="polite">
+          @if (missingRequired > 0) {
+            <div
+              class="rounded-md border border-orange-300 bg-orange-50 px-3 py-2 text-sm text-orange-700"
+              role="status"
+            >
+              Brakuje {{ missingRequired }} wymaganej(-ych) zgody(-d).
+            </div>
+          } @else {
+            <div
+              class="rounded-md border border-green-300 bg-green-50 px-3 py-2 text-sm text-green-700"
+              role="status"
+            >
+              Wszystkie wymagane zgody sa zaznaczone.
+            </div>
+          }
+        </div>
       }
 
       @for (group of groups; track group.scope) {
