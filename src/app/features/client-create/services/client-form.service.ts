@@ -31,16 +31,12 @@ export class ClientFormService {
   /** Czysci pola szczegolow (w tym email) przy zmianie typu klienta — `clientType` bez zmian. */
   resetDetailsFieldsExceptClientType(form: FormGroup<ClientCreateForm>): void {
     const d = form.controls.details.controls;
-    d.firstName.setValue('', { emitEvent: false });
-    d.lastName.setValue('', { emitEvent: false });
-    d.companyName.setValue('', { emitEvent: false });
-    d.nip.setValue('', { emitEvent: false });
-    d.email.setValue('', { emitEvent: false });
-    d.firstName.markAsUntouched();
-    d.lastName.markAsUntouched();
-    d.companyName.markAsUntouched();
-    d.nip.markAsUntouched();
-    d.email.markAsUntouched();
+    const fields = [d.firstName, d.lastName, d.companyName, d.nip, d.email] as const;
+    for (const c of fields) {
+      c.setValue('', { emitEvent: false });
+      c.markAsPristine();
+      c.markAsUntouched();
+    }
   }
 
   applyClientTypeValidators(form: FormGroup<ClientCreateForm>, clientType: ClientType): void {
