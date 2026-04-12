@@ -1,5 +1,8 @@
+import { Location } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/router';
+import { BehaviorSubject, of } from 'rxjs';
+import { vi } from 'vitest';
 import type { ClientCreateForm, ConsentDto, CreateClientPayload } from '../../models';
 import { ConsentsApiService } from '../../services/consents-api.service';
 import { ClientCreatePageComponent } from './client-create-page.component';
@@ -41,10 +44,40 @@ class ConsentsApiServiceMock {
 }
 
 describe('ClientCreatePageComponent', () => {
+  let queryParamMap$: BehaviorSubject<ParamMap>;
+
   beforeEach(async () => {
+    queryParamMap$ = new BehaviorSubject(convertToParamMap({ step: '1' }));
+
+    const routerMock = {
+      navigate: vi.fn((_commands: unknown[], extras?: { queryParams?: { step?: string } }) => {
+        const s = extras?.queryParams?.step;
+        if (s) {
+          queryParamMap$.next(convertToParamMap({ step: s }));
+        }
+        return Promise.resolve(true);
+      }),
+    };
+
+    const locationMock = {
+      back: vi.fn(() => {
+        queryParamMap$.next(convertToParamMap({ step: '1' }));
+      }),
+    };
+
     await TestBed.configureTestingModule({
       imports: [ClientCreatePageComponent],
-      providers: [{ provide: ConsentsApiService, useClass: ConsentsApiServiceMock }],
+      providers: [
+        { provide: ConsentsApiService, useClass: ConsentsApiServiceMock },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            queryParamMap: queryParamMap$.asObservable(),
+          },
+        },
+        { provide: Router, useValue: routerMock },
+        { provide: Location, useValue: locationMock },
+      ],
     }).compileComponents();
   });
 

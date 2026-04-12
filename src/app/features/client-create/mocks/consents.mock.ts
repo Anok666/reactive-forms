@@ -67,4 +67,25 @@ export const MOCK_CONSENTS: ConsentDto[] = [
     inUse: true,
     scope: 'LEGAL',
   },
+  {
+    id: 'c9',
+    code: 'LEGAL_B2B_PROCESSING',
+    title: 'Przetwarzanie danych w relacji B2B',
+    description: 'Dotyczy wylacznie klientow biznesowych.',
+    required: true,
+    inUse: true,
+    scope: 'LEGAL',
+    forClientTypes: ['COMPANY'],
+  },
+  {
+    id: 'c10',
+    code: 'LEGAL_KRS_NO_DEBT',
+    title: 'Twoja firma nie zalega z długami w KRS',
+    description:
+      'Wymagane oswiadczenie o braku wpisów o zaleglosciach w Krajowym Rejestrze Sadowym.',
+    required: true,
+    inUse: true,
+    scope: 'LEGAL',
+    forClientTypes: ['COMPANY'],
+  },
 ];
