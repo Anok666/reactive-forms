@@ -79,6 +79,8 @@ describe('ClientFormService', () => {
     expect(details.clientType.value).toBe('COMPANY');
     expect(details.firstName.value).toBe('');
     expect(details.email.value).toBe('');
+    expect(details.email.pristine).toBe(true);
+    expect(details.email.dirty).toBe(false);
   });
 
   it('clears all consent checkboxes', () => {

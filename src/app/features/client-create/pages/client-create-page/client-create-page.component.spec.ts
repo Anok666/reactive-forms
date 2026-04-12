@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/router';
 import { BehaviorSubject, of } from 'rxjs';
 import { vi } from 'vitest';
-import type { ClientCreateForm, ConsentDto, CreateClientPayload } from '../../models';
+import type { ClientCreateForm, ClientType, ConsentDto, CreateClientPayload } from '../../models';
 import { ConsentsApiService } from '../../services/consents-api.service';
 import { ClientCreatePageComponent } from './client-create-page.component';
 
@@ -18,8 +18,10 @@ interface ClientCreatePageTestAccess {
   save: () => void;
 }
 
-class ConsentsApiServiceMock {
-  getConsents() {
+/** Zgodny z `ConsentsApiService.getConsents(clientType)` — bez `delay`, żeby test był szybki. */
+class ConsentsApiServiceMock implements Pick<ConsentsApiService, 'getConsents'> {
+  getConsents(clientType: ClientType) {
+    void clientType;
     const consents: ConsentDto[] = [
       {
         id: '1',
