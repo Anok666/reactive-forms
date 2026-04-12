@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -11,7 +12,13 @@ import type { CreateClientPayload } from '../../models';
 
 @Component({
   selector: 'app-client-create-page',
-  imports: [CardModule, ButtonModule, ClientStepDetailsComponent, ClientStepConsentsComponent],
+  imports: [
+    NgClass,
+    CardModule,
+    ButtonModule,
+    ClientStepDetailsComponent,
+    ClientStepConsentsComponent,
+  ],
   templateUrl: './client-create-page.component.html',
 })
 export class ClientCreatePageComponent {
