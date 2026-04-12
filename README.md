@@ -1,59 +1,47 @@
-# ReactiveForms
+# Reactive Forms Starter
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.6.
+Aplikacja demonstracyjna: "Utworz klienta" z formularzem krokowym, dynamicznymi zgodami i walidacja oparta o Reactive Forms.
 
-## Development server
-
-To start a local development server, run:
+## Start
 
 ```bash
-ng serve
+npm install
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Jakość kodu i testy
 
 ```bash
-ng generate component component-name
+npm run lint
+npm run lint:fix
+npm run format
+npm run format:check
+npm test
+npm run build
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Co jest zaimplementowane
 
-```bash
-ng generate --help
+- krok 1: dane klienta (`PERSON`/`COMPANY`) z walidacja warunkowa,
+- krok 2: dynamiczne zgody z mock API (`inUse === true`), checkboxy i required consent validation,
+- zapis mapuje formularz do finalnego payloadu i pokazuje JSON preview + loguje wynik do konsoli.
+
+## Decyzje techniczne (krotko)
+
+Formularz jest zbudowany w `ClientFormService`, aby trzymac logike walidacji poza komponentami UI i zachowac czytelny podzial odpowiedzialnosci. Zgody sa trzymane jako `FormRecord<FormControl<boolean>>`, co daje prosty, typowany model `code -> accepted` oraz latwe mapowanie do payloadu. RxJS jest uzyty do strumienia zgod: filtrowanie `inUse`, cache przez `shareReplay(1)` i reaktywna synchronizacja kontrolek formularza (`tap`). W kroku 2 jest tez prosty view-model: grupowanie po `scope` i licznik brakujacych wymaganych zgod przez `combineLatest`.
+
+## Struktura projektu
+
+```text
+src/app/
+  core/         # singletony: serwisy globalne, interceptory, config
+  shared/       # komponenty/pipes/directives współdzielone
+  features/     # moduły/funkcje domenowe
+  layout/       # shell aplikacji (widoki ramowe)
 ```
 
-## Building
+## Dalsze kroki
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- przenieść aktualny formularz demo do `features/`,
+- dodać `core/http` i `core/state`,
+- ustalić konwencję nazw folderów per feature.

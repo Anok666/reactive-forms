@@ -1,0 +1,96 @@
+<main
+  class="flex min-h-full flex-1 flex-col bg-surface-50 p-4 text-surface-900 dark:bg-surface-950 dark:text-surface-0"
+>
+  <section class="mx-auto max-w-4xl">
+    <p-card>
+      <ng-template pTemplate="header">
+        <div class="border-b border-surface-200 p-6 dark:border-surface-700">
+          <h1 class="text-2xl font-semibold">Utworz klienta</h1>
+          <p class="mt-2 text-sm text-surface-600 dark:text-surface-300">
+            Iteracja 5: finalny payload i podglad JSON
+          </p>
+        </div>
+      </ng-template>
+
+      <div class="p-6">
+        @if (isSaved()) {
+          <div
+            class="mb-4 rounded-md border border-green-300 bg-green-50 px-3 py-2 text-sm text-green-700"
+          >
+            Zapisano. Formularz jest w trybie tylko do odczytu.
+          </div>
+        }
+
+        <ol class="mb-6 grid grid-cols-2 gap-3">
+          <li
+            class="rounded-md border p-3 text-sm"
+            [class.border-primary]="activeStep() === 0"
+            [class.bg-primary-50]="activeStep() === 0"
+          >
+            1. Dane klienta
+          </li>
+          <li
+            class="rounded-md border p-3 text-sm"
+            [class.border-primary]="activeStep() === 1"
+            [class.bg-primary-50]="activeStep() === 1"
+          >
+            2. Zgody
+          </li>
+        </ol>
+
+        @if (activeStep() === 0) {
+          <app-client-step-details [form]="clientForm.controls.details" />
+        } @else {
+          <app-client-step-consents
+            [consents$]="consents$"
+            [consentsForm]="clientForm.controls.consents"
+          />
+        }
+
+        <div class="mt-6 flex items-center justify-between">
+          <p-button
+            label="Wstecz"
+            severity="secondary"
+            [outlined]="true"
+            (onClick)="goBack()"
+            [disabled]="activeStep() === 0 || isSaved()"
+          />
+
+          @if (isSaved()) {
+            <p-button
+              label="Edytuj ponownie"
+              icon="pi pi-pencil"
+              severity="secondary"
+              (onClick)="editAgain()"
+            />
+          } @else if (activeStep() === 0) {
+            <p-button label="Dalej" icon="pi pi-arrow-right" iconPos="right" (onClick)="goNext()" />
+          } @else {
+            <p-button
+              label="Zapisz"
+              icon="pi pi-check"
+              (onClick)="save()"
+              [disabled]="!consentsLoaded()"
+            />
+          }
+        </div>
+      </div>
+    </p-card>
+
+    @if (savedPayload(); as payload) {
+      <p-card class="mt-4">
+        <ng-template pTemplate="header">
+          <div class="border-b border-surface-200 p-4 dark:border-surface-700">
+            <h2 class="text-lg font-semibold">Wynik mapowania (payload)</h2>
+          </div>
+        </ng-template>
+
+        <div class="p-4">
+          <pre
+            class="overflow-x-auto rounded-md bg-surface-900 p-4 text-xs text-surface-0"
+          ><code>{{ savedPayloadJson() }}</code></pre>
+        </div>
+      </p-card>
+    }
+  </section>
+</main>

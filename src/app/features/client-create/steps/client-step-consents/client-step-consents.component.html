@@ -1,0 +1,58 @@
+<section class="space-y-4">
+  <p class="text-sm text-surface-600 dark:text-surface-300">
+    Zgody ladowane z mockowego API (tylko
+    <code class="rounded bg-surface-100 px-1 dark:bg-surface-800">inUse === true</code>).
+  </p>
+
+  @if (groupedConsents$ | async; as groups) {
+    <div [formGroup]="consentsForm()" class="space-y-5">
+      @if (requiredMissingCount$ | async; as missingRequired) {
+        @if (missingRequired > 0) {
+          <div
+            class="rounded-md border border-orange-300 bg-orange-50 px-3 py-2 text-sm text-orange-700"
+          >
+            Brakuje {{ missingRequired }} wymaganej(-ych) zgody(-d).
+          </div>
+        } @else {
+          <div
+            class="rounded-md border border-green-300 bg-green-50 px-3 py-2 text-sm text-green-700"
+          >
+            Wszystkie wymagane zgody sa zaznaczone.
+          </div>
+        }
+      }
+
+      @for (group of groups; track group.scope) {
+        <article class="space-y-2">
+          <h3 class="text-sm font-semibold">{{ group.scope }}</h3>
+          <ul class="space-y-2">
+            @for (c of group.consents; track c.id) {
+              <li class="rounded-md border border-surface-200 p-3 dark:border-surface-700">
+                <div class="flex items-start gap-3">
+                  <p-checkbox [inputId]="c.code" [binary]="true" [formControlName]="c.code" />
+                  <label [for]="c.code" class="flex flex-col gap-1">
+                    <span class="font-medium">
+                      {{ c.title }}
+                      @if (c.required) {
+                        <span class="text-orange-600 dark:text-orange-400">(wymagana)</span>
+                      }
+                    </span>
+                    @if (c.description) {
+                      <span class="text-sm text-surface-600 dark:text-surface-400">
+                        {{ c.description }}
+                      </span>
+                    }
+                  </label>
+                </div>
+              </li>
+            }
+          </ul>
+        </article>
+      }
+    </div>
+  } @else {
+    <div class="flex justify-center py-10" role="status" aria-live="polite">
+      <p-progressSpinner strokeWidth="4" ariaLabel="Ladowanie zgod" />
+    </div>
+  }
+</section>
