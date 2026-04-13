@@ -30,7 +30,7 @@ describe('ClientFormService', () => {
     expect(details.lastName.errors).toBeNull();
     expect(form.controls.details.valid).toBe(false);
 
-    details.companyName.setValue('Acme');
+    details.companyName.setValue('Test Company');
     details.nip.setValue('1234567890');
     expect(form.controls.details.valid).toBe(true);
   });
@@ -70,7 +70,7 @@ describe('ClientFormService', () => {
     const details = form.controls.details.controls;
     details.clientType.setValue('PERSON');
     details.firstName.setValue('Jan');
-    details.email.setValue('jan@acme.com');
+    details.email.setValue('jan@test.com');
 
     details.clientType.setValue('COMPANY');
     service.resetDetailsFieldsExceptClientType(form);
