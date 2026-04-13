@@ -1,6 +1,6 @@
 # Reactive Forms Starter
 
-Technical demo (Angular 21) of a multi-step "Create client" wizard implemented with Reactive Forms, dynamic consent sets, and URL-driven step navigation.
+Aplikacja demonstracyjna: „Utwórz klienta” z formularzem krokowym, dynamicznymi zgodami i walidacją opartą o Reactive Forms.
 
 For a Polish technical version, see `README.pl.md`.
 
