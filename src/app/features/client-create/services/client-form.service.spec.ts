@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import type { ConsentDto } from '../models';
+import { makeConsent, makeDefaultConsents } from '../testing/client-create-test-builders';
 import { ClientFormService } from './client-form.service';
 
 describe('ClientFormService', () => {
@@ -37,24 +38,7 @@ describe('ClientFormService', () => {
 
   it('creates required consent controls and validates requiredTrue', () => {
     const form = service.createForm();
-    const consents: ConsentDto[] = [
-      {
-        id: '1',
-        code: 'LEGAL_RODO',
-        title: 'RODO',
-        required: true,
-        inUse: true,
-        scope: 'LEGAL',
-      },
-      {
-        id: '2',
-        code: 'MKT_EMAIL',
-        title: 'Marketing email',
-        required: false,
-        inUse: true,
-        scope: 'MARKETING',
-      },
-    ];
+    const consents: ConsentDto[] = makeDefaultConsents();
 
     service.syncConsentControls(form, consents);
 
@@ -86,14 +70,7 @@ describe('ClientFormService', () => {
   it('clears all consent checkboxes', () => {
     const form = service.createForm();
     const consents: ConsentDto[] = [
-      {
-        id: '1',
-        code: 'LEGAL_RODO',
-        title: 'RODO',
-        required: true,
-        inUse: true,
-        scope: 'LEGAL',
-      },
+      makeConsent({ code: 'LEGAL_RODO', required: true, scope: 'LEGAL' }),
     ];
     service.syncConsentControls(form, consents);
     form.controls.consents.controls['LEGAL_RODO'].setValue(true);
@@ -103,24 +80,7 @@ describe('ClientFormService', () => {
 
   it('removes obsolete consent controls on sync', () => {
     const form = service.createForm();
-    const initial: ConsentDto[] = [
-      {
-        id: '1',
-        code: 'LEGAL_RODO',
-        title: 'RODO',
-        required: true,
-        inUse: true,
-        scope: 'LEGAL',
-      },
-      {
-        id: '2',
-        code: 'MKT_EMAIL',
-        title: 'Marketing email',
-        required: false,
-        inUse: true,
-        scope: 'MARKETING',
-      },
-    ];
+    const initial: ConsentDto[] = makeDefaultConsents();
 
     service.syncConsentControls(form, initial);
     expect(form.controls.consents.contains('LEGAL_RODO')).toBe(true);

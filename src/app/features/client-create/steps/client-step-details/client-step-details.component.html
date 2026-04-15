@@ -1,7 +1,12 @@
 <section class="grid w-full min-w-0 max-w-full gap-4 md:grid-cols-2 md:gap-x-6">
   <ng-container [formGroup]="form()">
-    <div class="flex min-w-0 flex-col gap-2 md:col-span-2">
-      <label for="clientType" class="font-medium">Typ klienta</label>
+    <app-client-details-form-field
+      label="Typ klienta"
+      forId="clientType"
+      [showError]="showError('clientType')"
+      errorMessage="Typ klienta jest wymagany."
+      [fullWidth]="true"
+    >
       <p-select
         inputId="clientType"
         [options]="clientTypes"
@@ -11,77 +16,23 @@
         formControlName="clientType"
         [fluid]="true"
       />
-      <div class="form-field-message-slot md:break-words" aria-live="polite">
-        @if (showError('clientType')) {
-          <small class="block text-red-500" role="alert">Typ klienta jest wymagany.</small>
-        }
-      </div>
-    </div>
+    </app-client-details-form-field>
 
     @if (form().controls.clientType.value === 'PERSON') {
-      <div class="flex min-w-0 flex-col gap-2">
-        <label for="firstName" class="font-medium">Imie</label>
-        <input
-          id="firstName"
-          pInputText
-          placeholder="Jan"
-          formControlName="firstName"
-          [fluid]="true"
-        />
-        <div class="form-field-message-slot md:break-words" aria-live="polite">
-          @if (showError('firstName')) {
-            <small class="block text-red-500" role="alert">Imie jest wymagane.</small>
-          }
-        </div>
-      </div>
-
-      <div class="flex min-w-0 flex-col gap-2">
-        <label for="lastName" class="font-medium">Nazwisko</label>
-        <input
-          id="lastName"
-          pInputText
-          placeholder="Kowalski"
-          formControlName="lastName"
-          [fluid]="true"
-        />
-        <div class="form-field-message-slot md:break-words" aria-live="polite">
-          @if (showError('lastName')) {
-            <small class="block text-red-500" role="alert">Nazwisko jest wymagane.</small>
-          }
-        </div>
-      </div>
+      <app-client-details-person-fields [form]="form()" />
     }
 
     @if (form().controls.clientType.value === 'COMPANY') {
-      <div class="flex min-w-0 flex-col gap-2">
-        <label for="companyName" class="font-medium">Nazwa firmy</label>
-        <input
-          id="companyName"
-          pInputText
-          placeholder="Test Company Sp. z o.o."
-          formControlName="companyName"
-          [fluid]="true"
-        />
-        <div class="form-field-message-slot md:break-words" aria-live="polite">
-          @if (showError('companyName')) {
-            <small class="block text-red-500" role="alert">Nazwa firmy jest wymagana.</small>
-          }
-        </div>
-      </div>
-
-      <div class="flex min-w-0 flex-col gap-2">
-        <label for="nip" class="font-medium">NIP</label>
-        <input id="nip" pInputText placeholder="1234567890" formControlName="nip" [fluid]="true" />
-        <div class="form-field-message-slot md:break-words" aria-live="polite">
-          @if (showError('nip')) {
-            <small class="block text-red-500" role="alert">NIP jest wymagany.</small>
-          }
-        </div>
-      </div>
+      <app-client-details-company-fields [form]="form()" />
     }
 
-    <div class="flex min-w-0 flex-col gap-2 md:col-span-2">
-      <label for="email" class="font-medium">Email</label>
+    <app-client-details-form-field
+      label="Email"
+      forId="email"
+      [showError]="showError('email')"
+      errorMessage="Podaj poprawny adres email."
+      [fullWidth]="true"
+    >
       <input
         id="email"
         pInputText
@@ -90,11 +41,6 @@
         formControlName="email"
         [fluid]="true"
       />
-      <div class="form-field-message-slot md:break-words" aria-live="polite">
-        @if (showError('email')) {
-          <small class="block text-red-500" role="alert">Podaj poprawny adres email.</small>
-        }
-      </div>
-    </div>
+    </app-client-details-form-field>
   </ng-container>
 </section>

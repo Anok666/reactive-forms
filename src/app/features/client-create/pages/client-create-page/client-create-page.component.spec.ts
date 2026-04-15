@@ -5,6 +5,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { vi } from 'vitest';
 import type { ClientCreateForm, ClientType, ConsentDto, CreateClientPayload } from '../../models';
 import { ConsentsApiService } from '../../services/consents-api.service';
+import { fillPersonDetails, makeDefaultConsents } from '../../testing/client-create-test-builders';
 import { ClientCreatePageComponent } from './client-create-page.component';
 
 interface ClientCreatePageTestAccess {
@@ -22,27 +23,19 @@ interface ClientCreatePageTestAccess {
 class ConsentsApiServiceMock implements Pick<ConsentsApiService, 'getConsents'> {
   getConsents(clientType: ClientType) {
     void clientType;
-    const consents: ConsentDto[] = [
-      {
-        id: '1',
-        code: 'LEGAL_RODO',
-        title: 'RODO',
-        required: true,
-        inUse: true,
-        scope: 'LEGAL',
-      },
-      {
-        id: '2',
-        code: 'MKT_EMAIL',
-        title: 'Marketing email',
-        required: false,
-        inUse: true,
-        scope: 'MARKETING',
-      },
-    ];
+    const consents: ConsentDto[] = makeDefaultConsents();
 
     return of(consents);
   }
+}
+
+function createComponent(): {
+  fixture: ReturnType<typeof TestBed.createComponent<ClientCreatePageComponent>>;
+  component: ClientCreatePageTestAccess;
+} {
+  const fixture = TestBed.createComponent(ClientCreatePageComponent);
+  const component = fixture.componentInstance as unknown as ClientCreatePageTestAccess;
+  return { fixture, component };
 }
 
 describe('ClientCreatePageComponent', () => {
@@ -84,15 +77,11 @@ describe('ClientCreatePageComponent', () => {
   });
 
   it('handles flow step 1 -> step 2 -> save with consent validation', async () => {
-    const fixture = TestBed.createComponent(ClientCreatePageComponent);
-    const component = fixture.componentInstance as unknown as ClientCreatePageTestAccess;
+    const { fixture, component } = createComponent();
 
     fixture.detectChanges();
 
-    component.clientForm.controls.details.controls.clientType.setValue('PERSON');
-    component.clientForm.controls.details.controls.firstName.setValue('Jan');
-    component.clientForm.controls.details.controls.lastName.setValue('Kowalski');
-    component.clientForm.controls.details.controls.email.setValue('jan@acme.com');
+    fillPersonDetails(component.clientForm);
 
     component.goNext();
     expect(component.activeStep()).toBe(1);
