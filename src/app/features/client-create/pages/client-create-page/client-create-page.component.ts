@@ -1,8 +1,7 @@
-import { Location, NgClass } from '@angular/common';
+import { Location } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { distinctUntilChanged, map, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
 import { ClientStepConsentsComponent } from '../../steps/client-step-consents/client-step-consents.component';
@@ -10,17 +9,19 @@ import { ClientStepDetailsComponent } from '../../steps/client-step-details/clie
 import { ClientFormService } from '../../services/client-form.service';
 import { ConsentsApiService } from '../../services/consents-api.service';
 import type { CreateClientPayload } from '../../models';
+import { ClientCreateActionsComponent } from './components/client-create-actions.component';
+import { ClientCreateStepperComponent } from './components/client-create-stepper.component';
 import { buildCreateClientPayload } from './utils/build-create-client-payload.util';
 import { resolveClientCreateStep } from './utils/resolve-client-create-step.util';
 
 @Component({
   selector: 'app-client-create-page',
   imports: [
-    NgClass,
     CardModule,
-    ButtonModule,
     ClientStepDetailsComponent,
     ClientStepConsentsComponent,
+    ClientCreateStepperComponent,
+    ClientCreateActionsComponent,
   ],
   templateUrl: './client-create-page.component.html',
 })
