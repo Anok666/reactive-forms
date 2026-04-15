@@ -4,6 +4,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import type { ClientDetailsForm } from '../../models';
 import { ClientDetailsCompanyFieldsComponent } from './components/client-details-company-fields.component';
+import { ClientDetailsFormFieldComponent } from './components/client-details-form-field.component';
 import { ClientDetailsPersonFieldsComponent } from './components/client-details-person-fields.component';
 
 @Component({
@@ -14,6 +15,7 @@ import { ClientDetailsPersonFieldsComponent } from './components/client-details-
     InputTextModule,
     ClientDetailsPersonFieldsComponent,
     ClientDetailsCompanyFieldsComponent,
+    ClientDetailsFormFieldComponent,
   ],
   templateUrl: './client-step-details.component.html',
 })

@@ -2,14 +2,19 @@ import { Component, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import type { ClientDetailsForm } from '../../../models';
+import { ClientDetailsFormFieldComponent } from './client-details-form-field.component';
 
 @Component({
   selector: 'app-client-details-person-fields',
-  imports: [ReactiveFormsModule, InputTextModule],
+  imports: [ReactiveFormsModule, InputTextModule, ClientDetailsFormFieldComponent],
   template: `
     <ng-container [formGroup]="form()">
-      <div class="flex min-w-0 flex-col gap-2">
-        <label for="firstName" class="font-medium">Imie</label>
+      <app-client-details-form-field
+        label="Imie"
+        forId="firstName"
+        [showError]="showError('firstName')"
+        errorMessage="Imie jest wymagane."
+      >
         <input
           id="firstName"
           pInputText
@@ -17,15 +22,14 @@ import type { ClientDetailsForm } from '../../../models';
           formControlName="firstName"
           [fluid]="true"
         />
-        <div class="form-field-message-slot md:break-words" aria-live="polite">
-          @if (showError('firstName')) {
-            <small class="block text-red-500" role="alert">Imie jest wymagane.</small>
-          }
-        </div>
-      </div>
+      </app-client-details-form-field>
 
-      <div class="flex min-w-0 flex-col gap-2">
-        <label for="lastName" class="font-medium">Nazwisko</label>
+      <app-client-details-form-field
+        label="Nazwisko"
+        forId="lastName"
+        [showError]="showError('lastName')"
+        errorMessage="Nazwisko jest wymagane."
+      >
         <input
           id="lastName"
           pInputText
@@ -33,12 +37,7 @@ import type { ClientDetailsForm } from '../../../models';
           formControlName="lastName"
           [fluid]="true"
         />
-        <div class="form-field-message-slot md:break-words" aria-live="polite">
-          @if (showError('lastName')) {
-            <small class="block text-red-500" role="alert">Nazwisko jest wymagane.</small>
-          }
-        </div>
-      </div>
+      </app-client-details-form-field>
     </ng-container>
   `,
 })
