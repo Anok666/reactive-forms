@@ -3,10 +3,18 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import type { ClientDetailsForm } from '../../models';
+import { ClientDetailsCompanyFieldsComponent } from './components/client-details-company-fields.component';
+import { ClientDetailsPersonFieldsComponent } from './components/client-details-person-fields.component';
 
 @Component({
   selector: 'app-client-step-details',
-  imports: [ReactiveFormsModule, SelectModule, InputTextModule],
+  imports: [
+    ReactiveFormsModule,
+    SelectModule,
+    InputTextModule,
+    ClientDetailsPersonFieldsComponent,
+    ClientDetailsCompanyFieldsComponent,
+  ],
   templateUrl: './client-step-details.component.html',
 })
 export class ClientStepDetailsComponent {
