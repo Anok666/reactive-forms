@@ -10,6 +10,8 @@ import { ClientStepDetailsComponent } from '../../steps/client-step-details/clie
 import { ClientFormService } from '../../services/client-form.service';
 import { ConsentsApiService } from '../../services/consents-api.service';
 import type { CreateClientPayload } from '../../models';
+import { buildCreateClientPayload } from './utils/build-create-client-payload.util';
+import { resolveClientCreateStep } from './utils/resolve-client-create-step.util';
 
 @Component({
   selector: 'app-client-create-page',
@@ -59,27 +61,16 @@ export class ClientCreatePageComponent {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((step) => {
-        if (step !== '1' && step !== '2') {
-          void this.router.navigate([], {
-            relativeTo: this.route,
-            queryParams: { step: '1' },
-            replaceUrl: true,
-          });
-          return;
+        const resolvedStep = resolveClientCreateStep(
+          step,
+          this.clientForm.controls.details.invalid,
+        );
+
+        if (resolvedStep.shouldRedirect) {
+          void this.navigateToStep(resolvedStep.routeStep, true);
         }
-        if (step === '2') {
-          if (this.clientForm.controls.details.invalid) {
-            void this.router.navigate([], {
-              relativeTo: this.route,
-              queryParams: { step: '1' },
-              replaceUrl: true,
-            });
-            return;
-          }
-          this.activeStep.set(1);
-          return;
-        }
-        this.activeStep.set(0);
+
+        this.activeStep.set(resolvedStep.activeStep);
       });
 
     this.clientForm.controls.details.controls.clientType.valueChanges
@@ -133,7 +124,7 @@ export class ClientCreatePageComponent {
       return;
     }
 
-    const payload = this.toPayload();
+    const payload = buildCreateClientPayload(this.clientForm.getRawValue());
     this.savedPayload.set(payload);
     this.isSaved.set(true);
     this.clientForm.disable({ emitEvent: false });
@@ -154,18 +145,11 @@ export class ClientCreatePageComponent {
     return JSON.stringify(this.savedPayload(), null, 2);
   }
 
-  private toPayload(): CreateClientPayload {
-    const rawValue = this.clientForm.getRawValue();
-    const { clientType, firstName, lastName, companyName, nip, email } = rawValue.details;
-
-    return {
-      clientType,
-      firstName: clientType === 'PERSON' ? firstName : null,
-      lastName: clientType === 'PERSON' ? lastName : null,
-      companyName: clientType === 'COMPANY' ? companyName : null,
-      nip: clientType === 'COMPANY' ? nip : null,
-      email,
-      consents: rawValue.consents,
-    };
+  private navigateToStep(step: '1' | '2', replaceUrl = false): Promise<boolean> {
+    return this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { step },
+      replaceUrl,
+    });
   }
 }
