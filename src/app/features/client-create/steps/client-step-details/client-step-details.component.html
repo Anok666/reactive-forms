@@ -1,7 +1,12 @@
 <section class="grid w-full min-w-0 max-w-full gap-4 md:grid-cols-2 md:gap-x-6">
   <ng-container [formGroup]="form()">
-    <div class="flex min-w-0 flex-col gap-2 md:col-span-2">
-      <label for="clientType" class="font-medium">Typ klienta</label>
+    <app-client-details-form-field
+      label="Typ klienta"
+      forId="clientType"
+      [showError]="showError('clientType')"
+      errorMessage="Typ klienta jest wymagany."
+      [fullWidth]="true"
+    >
       <p-select
         inputId="clientType"
         [options]="clientTypes"
@@ -11,12 +16,7 @@
         formControlName="clientType"
         [fluid]="true"
       />
-      <div class="form-field-message-slot md:break-words" aria-live="polite">
-        @if (showError('clientType')) {
-          <small class="block text-red-500" role="alert">Typ klienta jest wymagany.</small>
-        }
-      </div>
-    </div>
+    </app-client-details-form-field>
 
     @if (form().controls.clientType.value === 'PERSON') {
       <app-client-details-person-fields [form]="form()" />
@@ -26,8 +26,13 @@
       <app-client-details-company-fields [form]="form()" />
     }
 
-    <div class="flex min-w-0 flex-col gap-2 md:col-span-2">
-      <label for="email" class="font-medium">Email</label>
+    <app-client-details-form-field
+      label="Email"
+      forId="email"
+      [showError]="showError('email')"
+      errorMessage="Podaj poprawny adres email."
+      [fullWidth]="true"
+    >
       <input
         id="email"
         pInputText
@@ -36,11 +41,6 @@
         formControlName="email"
         [fluid]="true"
       />
-      <div class="form-field-message-slot md:break-words" aria-live="polite">
-        @if (showError('email')) {
-          <small class="block text-red-500" role="alert">Podaj poprawny adres email.</small>
-        }
-      </div>
-    </div>
+    </app-client-details-form-field>
   </ng-container>
 </section>
